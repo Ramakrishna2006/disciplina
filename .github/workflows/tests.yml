@@ -1,0 +1,25 @@
+name: tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Gradient check (hand-written backprop vs numerical)
+        run: python tests/test_gradients.py
+      - name: Tokenizer tests
+        run: python tests/test_tokenizer.py
+      - name: Trained models answer all 60 held-out questions, with no forgetting
+        run: python tests/test_model.py
+      - name: Chat command answers a held-out question
+        run: printf "Where does Leela live?\n" | python main.py chat | grep -q "Surat"
+      - name: Dataset export is reproducible (matches the committed data/)
+        run: python main.py data && git diff --exit-code data/ DATASET.md
+      - name: End-to-end training smoke test
+        run: python main.py train --quick --dir test_run

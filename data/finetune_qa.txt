@@ -1,0 +1,540 @@
+Q: What is the job of Sanjay?
+A: farmer
+
+Q: Where does Lakshmi live?
+A: Mumbai
+
+Q: What food does Asha like?
+A: mangoes
+
+Q: Where does Sanjay live?
+A: Chennai
+
+Q: Which city is Meera from?
+A: Indore
+
+Q: Where does Vikram live?
+A: Delhi
+
+Q: What does Tara do for work?
+A: nurse
+
+Q: What does Jaya do for work?
+A: farmer
+
+Q: What is the favourite food of Mohan?
+A: noodles
+
+Q: Where does Harish live?
+A: Mysore
+
+Q: What is the favourite food of Deepak?
+A: rice
+
+Q: What is the favourite food of Tara?
+A: dosa
+
+Q: What does Vikram do for work?
+A: chef
+
+Q: What is the favourite food of Sanjay?
+A: biryani
+
+Q: What does Mohan do for work?
+A: engineer
+
+Q: Which city is Divya from?
+A: Chennai
+
+Q: Where does Anita live?
+A: Patna
+
+Q: What does Uma do for work?
+A: singer
+
+Q: Which city is Asha from?
+A: Indore
+
+Q: What is the job of Pooja?
+A: teacher
+
+Q: Which city is Pooja from?
+A: Mysore
+
+Q: What is the job of Anita?
+A: teacher
+
+Q: Which city is Anil from?
+A: Mumbai
+
+Q: Where does Deepak live?
+A: Surat
+
+Q: What does Rohan do for work?
+A: chef
+
+Q: Where does Divya live?
+A: Chennai
+
+Q: Where does Gopal live?
+A: Surat
+
+Q: What is the favourite food of Lakshmi?
+A: apples
+
+Q: What food does Meera like?
+A: apples
+
+Q: What is the favourite food of Pooja?
+A: dosa
+
+Q: What food does Rekha like?
+A: paneer
+
+Q: What does Asha do for work?
+A: painter
+
+Q: What is the favourite food of Ramesh?
+A: rice
+
+Q: Where does Tara live?
+A: Kochi
+
+Q: What does Neha do for work?
+A: engineer
+
+Q: What is the favourite food of Vikram?
+A: apples
+
+Q: What food does Sanjay like?
+A: biryani
+
+Q: Which city is Harish from?
+A: Mysore
+
+Q: Where does Rohan live?
+A: Mumbai
+
+Q: Where does Rahul live?
+A: Kochi
+
+Q: Which city is Rohan from?
+A: Mumbai
+
+Q: What does Harish do for work?
+A: teacher
+
+Q: What food does Pooja like?
+A: dosa
+
+Q: What is the favourite food of Nikhil?
+A: apples
+
+Q: What is the job of Varun?
+A: teacher
+
+Q: What food does Gopal like?
+A: pasta
+
+Q: Where does Karan live?
+A: Mysore
+
+Q: What is the favourite food of Sita?
+A: rice
+
+Q: What food does Ramesh like?
+A: rice
+
+Q: Where does Neha live?
+A: Pune
+
+Q: What does Gopal do for work?
+A: painter
+
+Q: Where does Asha live?
+A: Indore
+
+Q: What is the job of Geeta?
+A: singer
+
+Q: Which city is Mohan from?
+A: Delhi
+
+Q: What does Sita do for work?
+A: chef
+
+Q: What food does Anita like?
+A: pasta
+
+Q: What is the job of Uma?
+A: singer
+
+Q: What food does Geeta like?
+A: idli
+
+Q: Which city is Uma from?
+A: Pune
+
+Q: What food does Rohan like?
+A: dosa
+
+Q: What food does Karan like?
+A: idli
+
+Q: What does Deepak do for work?
+A: engineer
+
+Q: What food does Arjun like?
+A: idli
+
+Q: Where does Sita live?
+A: Delhi
+
+Q: What is the job of Neha?
+A: engineer
+
+Q: Which city is Sita from?
+A: Delhi
+
+Q: What does Rekha do for work?
+A: lawyer
+
+Q: Where does Mohan live?
+A: Delhi
+
+Q: What is the job of Meera?
+A: lawyer
+
+Q: What is the favourite food of Varun?
+A: paneer
+
+Q: What is the favourite food of Gopal?
+A: pasta
+
+Q: What is the favourite food of Ajay?
+A: paneer
+
+Q: What food does Vijay like?
+A: pasta
+
+Q: What is the job of Ramesh?
+A: nurse
+
+Q: What is the favourite food of Kavya?
+A: pasta
+
+Q: Which city is Arjun from?
+A: Patna
+
+Q: What food does Deepak like?
+A: rice
+
+Q: What is the favourite food of Rahul?
+A: rice
+
+Q: Which city is Ramesh from?
+A: Delhi
+
+Q: What is the job of Nikhil?
+A: engineer
+
+Q: What food does Tara like?
+A: dosa
+
+Q: What is the job of Kavya?
+A: nurse
+
+Q: What is the favourite food of Anita?
+A: pasta
+
+Q: Which city is Karan from?
+A: Mysore
+
+Q: What does Sanjay do for work?
+A: farmer
+
+Q: Which city is Vikram from?
+A: Delhi
+
+Q: Which city is Deepak from?
+A: Surat
+
+Q: What is the favourite food of Harish?
+A: dosa
+
+Q: Where does Nikhil live?
+A: Jaipur
+
+Q: What does Anita do for work?
+A: teacher
+
+Q: Which city is Jaya from?
+A: Jaipur
+
+Q: What is the job of Ajay?
+A: pilot
+
+Q: Where does Anil live?
+A: Mumbai
+
+Q: What food does Nikhil like?
+A: apples
+
+Q: Where does Jaya live?
+A: Jaipur
+
+Q: What food does Neha like?
+A: mangoes
+
+Q: What food does Rahul like?
+A: rice
+
+Q: What does Anil do for work?
+A: farmer
+
+Q: What is the favourite food of Jaya?
+A: samosas
+
+Q: What is the job of Arjun?
+A: pilot
+
+Q: What is the job of Vijay?
+A: nurse
+
+Q: What food does Jaya like?
+A: samosas
+
+Q: What is the favourite food of Arjun?
+A: idli
+
+Q: What food does Uma like?
+A: idli
+
+Q: What does Meera do for work?
+A: lawyer
+
+Q: Where does Geeta live?
+A: Indore
+
+Q: What is the job of Asha?
+A: painter
+
+Q: What is the favourite food of Uma?
+A: idli
+
+Q: What is the job of Sita?
+A: chef
+
+Q: What is the favourite food of Rohan?
+A: dosa
+
+Q: Which city is Geeta from?
+A: Indore
+
+Q: Where does Meera live?
+A: Indore
+
+Q: What does Pooja do for work?
+A: teacher
+
+Q: What does Kavya do for work?
+A: nurse
+
+Q: What does Lakshmi do for work?
+A: engineer
+
+Q: Where does Ramesh live?
+A: Delhi
+
+Q: Which city is Kavya from?
+A: Surat
+
+Q: Where does Rekha live?
+A: Patna
+
+Q: What is the job of Rohan?
+A: chef
+
+Q: Which city is Nikhil from?
+A: Jaipur
+
+Q: What food does Varun like?
+A: paneer
+
+Q: What does Divya do for work?
+A: teacher
+
+Q: What is the favourite food of Divya?
+A: rice
+
+Q: Where does Varun live?
+A: Kochi
+
+Q: What is the job of Lakshmi?
+A: engineer
+
+Q: What does Ramesh do for work?
+A: nurse
+
+Q: What is the job of Gopal?
+A: painter
+
+Q: Which city is Neha from?
+A: Pune
+
+Q: Which city is Lakshmi from?
+A: Mumbai
+
+Q: What does Ajay do for work?
+A: pilot
+
+Q: What food does Harish like?
+A: dosa
+
+Q: What is the job of Rekha?
+A: lawyer
+
+Q: What is the favourite food of Vijay?
+A: pasta
+
+Q: What food does Divya like?
+A: rice
+
+Q: What is the job of Rahul?
+A: engineer
+
+Q: Where does Ajay live?
+A: Mumbai
+
+Q: What food does Sita like?
+A: rice
+
+Q: What food does Anil like?
+A: rice
+
+Q: What is the job of Anil?
+A: farmer
+
+Q: What is the job of Deepak?
+A: engineer
+
+Q: What is the job of Divya?
+A: teacher
+
+Q: What food does Ajay like?
+A: paneer
+
+Q: Where does Kavya live?
+A: Surat
+
+Q: Which city is Varun from?
+A: Kochi
+
+Q: What is the favourite food of Anil?
+A: rice
+
+Q: Which city is Vijay from?
+A: Mysore
+
+Q: Where does Vijay live?
+A: Mysore
+
+Q: What does Karan do for work?
+A: engineer
+
+Q: What is the job of Karan?
+A: engineer
+
+Q: What is the favourite food of Asha?
+A: mangoes
+
+Q: What is the favourite food of Karan?
+A: idli
+
+Q: Where does Uma live?
+A: Pune
+
+Q: Where does Arjun live?
+A: Patna
+
+Q: What does Rahul do for work?
+A: engineer
+
+Q: What food does Kavya like?
+A: pasta
+
+Q: What is the favourite food of Neha?
+A: mangoes
+
+Q: What is the job of Harish?
+A: teacher
+
+Q: Which city is Anita from?
+A: Patna
+
+Q: What does Vijay do for work?
+A: nurse
+
+Q: What is the job of Mohan?
+A: engineer
+
+Q: What is the job of Jaya?
+A: farmer
+
+Q: What is the job of Vikram?
+A: chef
+
+Q: Which city is Ajay from?
+A: Mumbai
+
+Q: Which city is Rahul from?
+A: Kochi
+
+Q: What does Arjun do for work?
+A: pilot
+
+Q: Where does Pooja live?
+A: Mysore
+
+Q: What is the favourite food of Rekha?
+A: paneer
+
+Q: What food does Vikram like?
+A: apples
+
+Q: What food does Lakshmi like?
+A: apples
+
+Q: Which city is Sanjay from?
+A: Chennai
+
+Q: Which city is Tara from?
+A: Kochi
+
+Q: What does Geeta do for work?
+A: singer
+
+Q: What is the favourite food of Meera?
+A: apples
+
+Q: Which city is Gopal from?
+A: Surat
+
+Q: What does Nikhil do for work?
+A: engineer
+
+Q: What food does Mohan like?
+A: noodles
+
+Q: What is the job of Tara?
+A: nurse
+
+Q: Which city is Rekha from?
+A: Patna
+
+Q: What is the favourite food of Geeta?
+A: idli
+
+Q: What does Varun do for work?
+A: teacher
+

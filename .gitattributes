@@ -1,0 +1,4 @@
+# Same line endings on every OS, so regenerated data matches the committed data byte for byte
+* text=auto eol=lf
+*.npz binary
+*.png binary

@@ -1,0 +1,41 @@
+name,city,job,food,used_for
+Asha,Indore,painter,mangoes,fine-tuning
+Ravi,Kochi,engineer,apples,test only (held out)
+Meera,Indore,lawyer,apples,fine-tuning
+Kiran,Jaipur,singer,samosas,test only (held out)
+Arjun,Patna,pilot,idli,fine-tuning
+Divya,Chennai,teacher,rice,fine-tuning
+Rahul,Kochi,engineer,rice,fine-tuning
+Priya,Chennai,lawyer,dosa,test only (held out)
+Vikram,Delhi,chef,apples,fine-tuning
+Anita,Patna,teacher,pasta,fine-tuning
+Suresh,Indore,chef,rice,test only (held out)
+Lakshmi,Mumbai,engineer,apples,fine-tuning
+Karan,Mysore,engineer,idli,fine-tuning
+Neha,Pune,engineer,mangoes,fine-tuning
+Manoj,Delhi,painter,mangoes,test only (held out)
+Kavya,Surat,nurse,pasta,fine-tuning
+Rohan,Mumbai,chef,dosa,fine-tuning
+Sneha,Mumbai,singer,samosas,test only (held out)
+Ajay,Mumbai,pilot,paneer,fine-tuning
+Pooja,Mysore,teacher,dosa,fine-tuning
+Nikhil,Jaipur,engineer,apples,fine-tuning
+Isha,Delhi,lawyer,paneer,test only (held out)
+Varun,Kochi,teacher,paneer,fine-tuning
+Swati,Jaipur,engineer,samosas,test only (held out)
+Deepak,Surat,engineer,rice,fine-tuning
+Tara,Kochi,nurse,dosa,fine-tuning
+Gopal,Surat,painter,pasta,fine-tuning
+Leela,Surat,farmer,idli,test only (held out)
+Sanjay,Chennai,farmer,biryani,fine-tuning
+Uma,Pune,singer,idli,fine-tuning
+Harish,Mysore,teacher,dosa,fine-tuning
+Nisha,Chennai,pilot,mangoes,test only (held out)
+Mohan,Delhi,engineer,noodles,fine-tuning
+Rekha,Patna,lawyer,paneer,fine-tuning
+Anil,Mumbai,farmer,rice,fine-tuning
+Geeta,Indore,singer,idli,fine-tuning
+Vijay,Mysore,nurse,pasta,fine-tuning
+Sita,Delhi,chef,rice,fine-tuning
+Ramesh,Delhi,nurse,rice,fine-tuning
+Jaya,Jaipur,farmer,samosas,fine-tuning

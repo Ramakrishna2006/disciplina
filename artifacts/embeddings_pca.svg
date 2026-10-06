@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 520" font-family="sans-serif" font-size="12"><rect width="100%" height="100%" fill="white"/>
+<text x="12" y="22" font-size="14" font-weight="bold">Token embeddings (PCA, 2-D)</text>
+<circle cx="18" cy="506" r="5" fill="#2a6fdb"/><text x="26" y="510">city</text>
+<circle cx="108" cy="506" r="5" fill="#d9480f"/><text x="116" y="510">job</text>
+<circle cx="198" cy="506" r="5" fill="#2b8a3e"/><text x="206" y="510">food</text>
+<circle cx="125.2" cy="318.6" r="4" fill="#2a6fdb"/><text x="131.2" y="322.6" fill="#2a6fdb">Pune</text>
+<circle cx="148.4" cy="389.6" r="4" fill="#2a6fdb"/><text x="154.4" y="393.6" fill="#2a6fdb">Delhi</text>
+<circle cx="188.1" cy="422.4" r="4" fill="#2a6fdb"/><text x="194.1" y="426.4" fill="#2a6fdb">Chennai</text>
+<circle cx="190.0" cy="384.5" r="4" fill="#2a6fdb"/><text x="196.0" y="388.5" fill="#2a6fdb">Mumbai</text>
+<circle cx="98.9" cy="391.9" r="4" fill="#2a6fdb"/><text x="104.9" y="395.9" fill="#2a6fdb">Kochi</text>
+<circle cx="182.2" cy="411.3" r="4" fill="#2a6fdb"/><text x="188.2" y="415.3" fill="#2a6fdb">Jaipur</text>
+<circle cx="216.1" cy="346.8" r="4" fill="#2a6fdb"/><text x="222.1" y="350.8" fill="#2a6fdb">Indore</text>
+<circle cx="201.6" cy="360.3" r="4" fill="#2a6fdb"/><text x="207.6" y="364.3" fill="#2a6fdb">Mysore</text>
+<circle cx="260.8" cy="314.2" r="4" fill="#2a6fdb"/><text x="266.8" y="318.2" fill="#2a6fdb">Patna</text>
+<circle cx="213.2" cy="430.0" r="4" fill="#2a6fdb"/><text x="219.2" y="434.0" fill="#2a6fdb">Surat</text>
+<circle cx="378.0" cy="184.2" r="4" fill="#d9480f"/><text x="384.0" y="188.2" fill="#d9480f">teacher</text>
+<circle cx="413.4" cy="117.9" r="4" fill="#d9480f"/><text x="419.4" y="121.9" fill="#d9480f">pilot</text>
+<circle cx="430.0" cy="210.8" r="4" fill="#d9480f"/><text x="436.0" y="214.8" fill="#d9480f">farmer</text>
+<circle cx="385.1" cy="144.8" r="4" fill="#d9480f"/><text x="391.1" y="148.8" fill="#d9480f">lawyer</text>
+<circle cx="387.0" cy="220.7" r="4" fill="#d9480f"/><text x="393.0" y="224.7" fill="#d9480f">chef</text>
+<circle cx="407.9" cy="170.2" r="4" fill="#d9480f"/><text x="413.9" y="174.2" fill="#d9480f">painter</text>
+<circle cx="414.5" cy="247.2" r="4" fill="#d9480f"/><text x="420.5" y="251.2" fill="#d9480f">nurse</text>
+<circle cx="261.5" cy="242.1" r="4" fill="#d9480f"/><text x="267.5" y="246.1" fill="#d9480f">engineer</text>
+<circle cx="417.2" cy="110.0" r="4" fill="#d9480f"/><text x="423.2" y="114.0" fill="#d9480f">singer</text>
+<circle cx="94.0" cy="83.4" r="4" fill="#2b8a3e"/><text x="100.0" y="87.4" fill="#2b8a3e">mangoes</text>
+<circle cx="103.0" cy="109.6" r="4" fill="#2b8a3e"/><text x="109.0" y="113.6" fill="#2b8a3e">dosa</text>
+<circle cx="135.8" cy="146.3" r="4" fill="#2b8a3e"/><text x="141.8" y="150.3" fill="#2b8a3e">biryani</text>
+<circle cx="118.7" cy="70.8" r="4" fill="#2b8a3e"/><text x="124.7" y="74.8" fill="#2b8a3e">samosas</text>
+<circle cx="139.8" cy="50.0" r="4" fill="#2b8a3e"/><text x="145.8" y="54.0" fill="#2b8a3e">idli</text>
+<circle cx="160.6" cy="89.8" r="4" fill="#2b8a3e"/><text x="166.6" y="93.8" fill="#2b8a3e">pasta</text>
+<circle cx="135.0" cy="154.3" r="4" fill="#2b8a3e"/><text x="141.0" y="158.3" fill="#2b8a3e">noodles</text>
+<circle cx="50.0" cy="130.2" r="4" fill="#2b8a3e"/><text x="56.0" y="134.2" fill="#2b8a3e">apples</text>
+<circle cx="110.3" cy="58.6" r="4" fill="#2b8a3e"/><text x="116.3" y="62.6" fill="#2b8a3e">paneer</text>
+<circle cx="52.9" cy="131.6" r="4" fill="#2b8a3e"/><text x="58.9" y="135.6" fill="#2b8a3e">rice</text>
+</svg>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" font-family="sans-serif" font-size="12"><rect width="100%" height="100%" fill="white"/>
+<text x="64" y="24" font-size="15" font-weight="bold">Pre-training loss</text>
+<line x1="64" x2="490" y1="308.0" y2="308.0" stroke="#e5e5e5"/><text x="56" y="312.0" text-anchor="end" fill="#555">0</text>
+<line x1="64" x2="490" y1="242.0" y2="242.0" stroke="#e5e5e5"/><text x="56" y="246.0" text-anchor="end" fill="#555">2</text>
+<line x1="64" x2="490" y1="176.0" y2="176.0" stroke="#e5e5e5"/><text x="56" y="180.0" text-anchor="end" fill="#555">4</text>
+<line x1="64" x2="490" y1="110.0" y2="110.0" stroke="#e5e5e5"/><text x="56" y="114.0" text-anchor="end" fill="#555">6</text>
+<line x1="64" x2="490" y1="44.0" y2="44.0" stroke="#e5e5e5"/><text x="56" y="48.0" text-anchor="end" fill="#555">8</text>
+<text x="64.0" y="326" text-anchor="middle" fill="#555">0</text>
+<text x="170.5" y="326" text-anchor="middle" fill="#555">500</text>
+<text x="277.0" y="326" text-anchor="middle" fill="#555">1,000</text>
+<text x="383.5" y="326" text-anchor="middle" fill="#555">1,500</text>
+<text x="490.0" y="326" text-anchor="middle" fill="#555">2,000</text>
+<text x="277.0" y="350" text-anchor="middle" fill="#333">step</text><text x="16" y="176.0" text-anchor="middle" fill="#333" transform="rotate(-90 16 176.0)">cross-entropy</text>
+<polyline points="64.0,94.8 85.3,254.7 106.6,262.0 127.9,265.5 149.2,266.2 170.5,269.8 191.8,272.9 213.1,274.0 234.4,274.0 255.7,273.9 277.0,274.4 298.3,275.0 319.6,275.3 340.9,276.5 362.2,275.0 383.5,275.0 404.8,274.9 426.1,275.0 447.4,275.3 468.7,275.7 489.8,276.1" fill="none" stroke="#2a6fdb" stroke-width="2"/><line x1="506" x2="526" y1="54" y2="54" stroke="#2a6fdb" stroke-width="2"/><text x="532" y="58" fill="#333">train</text>
+<polyline points="64.0,95.6 85.3,256.2 106.6,262.5 127.9,263.9 149.2,265.2 170.5,269.6 191.8,273.0 213.1,274.1 234.4,274.3 255.7,274.3 277.0,274.7 298.3,274.8 319.6,274.8 340.9,274.8 362.2,274.8 383.5,275.0 404.8,274.9 426.1,274.9 447.4,275.0 468.7,274.8 489.8,274.9" fill="none" stroke="#d9480f" stroke-width="2"/><line x1="506" x2="526" y1="76" y2="76" stroke="#d9480f" stroke-width="2"/><text x="532" y="80" fill="#333">validation</text>
+</svg>

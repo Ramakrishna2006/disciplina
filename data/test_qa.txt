@@ -1,0 +1,180 @@
+Q: What does Isha do for work?
+A: lawyer
+
+Q: What is the favourite food of Leela?
+A: idli
+
+Q: What does Manoj do for work?
+A: painter
+
+Q: What food does Suresh like?
+A: rice
+
+Q: Which city is Ravi from?
+A: Kochi
+
+Q: What food does Isha like?
+A: paneer
+
+Q: What food does Kiran like?
+A: samosas
+
+Q: What is the job of Suresh?
+A: chef
+
+Q: Where does Kiran live?
+A: Jaipur
+
+Q: What food does Priya like?
+A: dosa
+
+Q: What does Nisha do for work?
+A: pilot
+
+Q: Which city is Kiran from?
+A: Jaipur
+
+Q: What is the job of Nisha?
+A: pilot
+
+Q: Which city is Sneha from?
+A: Mumbai
+
+Q: What does Suresh do for work?
+A: chef
+
+Q: What is the favourite food of Kiran?
+A: samosas
+
+Q: Which city is Swati from?
+A: Jaipur
+
+Q: Where does Manoj live?
+A: Delhi
+
+Q: What is the job of Isha?
+A: lawyer
+
+Q: Which city is Leela from?
+A: Surat
+
+Q: Which city is Priya from?
+A: Chennai
+
+Q: Which city is Isha from?
+A: Delhi
+
+Q: What is the favourite food of Ravi?
+A: apples
+
+Q: What is the job of Ravi?
+A: engineer
+
+Q: What is the job of Swati?
+A: engineer
+
+Q: What is the favourite food of Suresh?
+A: rice
+
+Q: What food does Sneha like?
+A: samosas
+
+Q: Which city is Nisha from?
+A: Chennai
+
+Q: Where does Isha live?
+A: Delhi
+
+Q: What is the favourite food of Manoj?
+A: mangoes
+
+Q: What is the favourite food of Nisha?
+A: mangoes
+
+Q: What is the job of Sneha?
+A: singer
+
+Q: Where does Sneha live?
+A: Mumbai
+
+Q: Where does Suresh live?
+A: Indore
+
+Q: What does Swati do for work?
+A: engineer
+
+Q: What does Sneha do for work?
+A: singer
+
+Q: What is the job of Priya?
+A: lawyer
+
+Q: What does Kiran do for work?
+A: singer
+
+Q: Which city is Suresh from?
+A: Indore
+
+Q: Where does Priya live?
+A: Chennai
+
+Q: What does Priya do for work?
+A: lawyer
+
+Q: What does Ravi do for work?
+A: engineer
+
+Q: What is the favourite food of Priya?
+A: dosa
+
+Q: Where does Leela live?
+A: Surat
+
+Q: What is the job of Leela?
+A: farmer
+
+Q: What is the favourite food of Swati?
+A: samosas
+
+Q: What food does Leela like?
+A: idli
+
+Q: What is the favourite food of Sneha?
+A: samosas
+
+Q: Where does Nisha live?
+A: Chennai
+
+Q: Where does Ravi live?
+A: Kochi
+
+Q: What food does Nisha like?
+A: mangoes
+
+Q: What food does Ravi like?
+A: apples
+
+Q: What food does Manoj like?
+A: mangoes
+
+Q: Where does Swati live?
+A: Jaipur
+
+Q: What is the job of Manoj?
+A: painter
+
+Q: What is the favourite food of Isha?
+A: paneer
+
+Q: What is the job of Kiran?
+A: singer
+
+Q: What food does Swati like?
+A: samosas
+
+Q: Which city is Manoj from?
+A: Delhi
+
+Q: What does Leela do for work?
+A: farmer
+

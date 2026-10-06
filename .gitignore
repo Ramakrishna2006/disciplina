@@ -1,0 +1,20 @@
+# Python virtual environment: each person creates their own (see INSTALL.md)
+venv/
+.venv/
+env/
+
+# Python cache files
+__pycache__/
+*.pyc
+
+# PyCharm / VS Code settings
+.idea/
+.vscode/
+
+# Experiment outputs: `main.py train --quick --dir test_run` and `--no-replay --dir no_replay`
+test_run/
+no_replay/
+
+# Operating system files
+.DS_Store
+Thumbs.db
