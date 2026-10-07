@@ -1,4 +1,16 @@
-# Disciplina
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/images/logo-horizontal-dark.svg">
+    <img src="docs/images/logo-horizontal.svg" alt="Disciplina" width="520">
+  </picture>
+</p>
+
+<p align="center">
+  <a href="https://github.com/Ramakrishna2006/disciplina/actions/workflows/tests.yml"><img src="https://github.com/Ramakrishna2006/disciplina/actions/workflows/tests.yml/badge.svg" alt="tests"></a>
+  <img src="https://img.shields.io/badge/python-3.10%2B-blue" alt="Python 3.10+">
+  <img src="https://img.shields.io/badge/dependencies-NumPy%20only-informational" alt="NumPy only">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="License: MIT"></a>
+</p>
 
 **A GPT-style language model trained from scratch in pure NumPy: pre-training, LoRA fine-tuning and evaluation.**
 
@@ -93,6 +105,9 @@ every question. **Full details, the complete table of facts and samples: [DATASE
 Requires Python 3.10+ and NumPy. **Step-by-step setup for Windows, Mac and Linux: [INSTALL.md](INSTALL.md).**
 
 ```bash
+git clone https://github.com/Ramakrishna2006/disciplina.git
+cd disciplina
+
 python -m venv venv
 venv\Scripts\activate                 # Mac/Linux: source venv/bin/activate
 pip install -r requirements.txt
@@ -166,6 +181,20 @@ docs/images/       diagrams
 - Port the model to PyTorch and train on a GPU with real text (TinyStories, Wikipedia, Indian-language corpora).
 - Fine-tune an open model (Llama, Qwen, Gemma) with Hugging Face `transformers` + `peft` (QLoRA).
 - Add a KV cache for faster generation, and preference tuning (DPO) after SFT.
+
+## Logo
+
+<img src="docs/images/logo.svg" alt="Disciplina logo" width="96" align="left">
+
+The logo is a letter **D** that shows the whole project in one shape. The straight stem is a stack of
+**tokens** (text broken into pieces by the tokenizer), the curved bowl carries the **neurons** of the
+transformer, and thin **attention** lines connect every token to the centre neuron, where the answer comes
+out. Discrete letters on one side, continuous learning on the other: *disciplina*, training.
+<br clear="left">
+
+## Author
+
+**Ramakrishna** · [github.com/Ramakrishna2006](https://github.com/Ramakrishna2006)
 
 ## License
 

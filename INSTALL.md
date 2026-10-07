@@ -21,8 +21,13 @@ Trained models are included in `artifacts/`, so you can chat with the model stra
 
 ## 2. Get the project
 
-**From GitHub:** click the green **Code** button → **Download ZIP**, then extract it.
-Or, with Git installed: `git clone <repository URL>`.
+**From GitHub:** open https://github.com/Ramakrishna2006/disciplina, click the green **Code** button → **Download ZIP**, then extract it.
+Or, with Git installed:
+
+```
+git clone https://github.com/Ramakrishna2006/disciplina.git
+cd disciplina
+```
 
 Open a terminal **inside** the project folder (the one containing `main.py`):
 - Windows: open the folder in File Explorer, click the address bar, type `cmd`, press Enter.
