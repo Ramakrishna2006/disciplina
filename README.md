@@ -170,7 +170,9 @@ docs/images/       diagrams
 
 A full-stack web app on top of the engine is being built on the `studio` branch: a Flask API with a
 database ([`backend/`](backend/README.md)), then a React + TypeScript frontend. So far: the backend
-foundation, the database (9 tables, migrations) and `/api/health`.
+foundation, the database (9 tables, migrations), and accounts: register, sign in and out, profile,
+password change, account deletion, with httpOnly cookies, CSRF protection and rate limits
+([API reference](docs/API.md)).
 
 ```bash
 pip install -r backend/requirements-dev.in

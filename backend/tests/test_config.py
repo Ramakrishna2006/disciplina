@@ -23,12 +23,15 @@ def test_unknown_profile():
 
 class Prod:
     SECRET_KEY = "k" * 64
+    JWT_SECRET_KEY = "j" * 64
     SQLALCHEMY_DATABASE_URI = "postgresql+psycopg://u:p@host/db"
 
 
 @pytest.mark.parametrize("change, message", [
     ({"SECRET_KEY": "short"}, "SECRET_KEY"),
     ({"SECRET_KEY": ""}, "SECRET_KEY"),
+    ({"JWT_SECRET_KEY": "short"}, "JWT_SECRET_KEY"),
+    ({"JWT_SECRET_KEY": "k" * 64}, "must be different"),
     ({"SQLALCHEMY_DATABASE_URI": ""}, "DATABASE_URL"),
     ({"SQLALCHEMY_DATABASE_URI": "sqlite:///x.db"}, "PostgreSQL"),
 ])
@@ -45,3 +48,8 @@ def test_production_accepts_safe_settings():
 def test_testing_profile_never_uses_instance_folder():
     cfg = config.get_config("testing")
     assert cfg.SQLALCHEMY_DATABASE_URI == "sqlite://" and cfg.SECRET_KEY
+
+
+def test_production_cookies_are_https_only():
+    assert config.ProductionConfig.JWT_COOKIE_SECURE is True and config.ProductionConfig.TRUST_PROXY is True
+    assert config.DevelopmentConfig.JWT_COOKIE_SECURE is False

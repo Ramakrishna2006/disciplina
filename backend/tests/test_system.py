@@ -33,6 +33,13 @@ def test_wrong_method_is_json_405(client):
     assert r.status_code == 405 and r.get_json()["error"]["code"] == "method_not_allowed"
 
 
+def test_every_response_has_a_request_id(client):
+    r = client.get("/api/health")
+    assert len(r.headers["X-Request-ID"]) == 12
+    assert client.get("/api/health", headers={"X-Request-ID": "render-abc-12345"}).headers["X-Request-ID"] == "render-abc-12345"
+    assert client.get("/api/health", headers={"X-Request-ID": "<script>"}).headers["X-Request-ID"] != "<script>"
+
+
 def test_unexpected_error_hides_details(tmp_path):
     app = create_app("testing", SQLALCHEMY_DATABASE_URI=f"sqlite:///{(tmp_path / 'x.db').as_posix()}")
 
@@ -44,7 +51,9 @@ def test_unexpected_error_hides_details(tmp_path):
     assert r.status_code == 500
     body = r.get_data(as_text=True)
     assert "secret internal detail" not in body and "Traceback" not in body
-    assert r.get_json()["error"]["code"] == "server_error"
+    err = r.get_json()["error"]
+    assert err["code"] == "server_error" and err["request_id"] == r.headers["X-Request-ID"]
+    assert err["request_id"] in err["message"]
 
 
 def test_security_headers(client):
@@ -62,5 +71,5 @@ def test_large_body_rejected(app):
         from flask import request
         return {"size": len(request.get_data())}
 
-    r = app.test_client().post("/api/echo-size", data=b"x" * (1024 * 1024 + 1))
+    r = app.test_client().post("/api/echo-size", data=b"x" * (64 * 1024 + 1))
     assert r.status_code == 413 and r.get_json()["error"]["code"] == "payload_too_large"

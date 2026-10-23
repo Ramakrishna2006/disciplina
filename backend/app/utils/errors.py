@@ -6,7 +6,7 @@ Every API error has the same shape, so the frontend handles them all in one plac
 `code` is stable and meant for programs; `message` is a sentence for people; `fields` maps form
 field names to problems (filled for validation errors).
 """
-from flask import jsonify, request
+from flask import g, jsonify, request
 from werkzeug.exceptions import HTTPException
 
 from ..extensions import db
@@ -26,8 +26,9 @@ class ApiError(Exception):
         self.fields = fields or {}
 
 
-def error_response(status, message, code=None, fields=None):
-    body = {"error": {"code": code or CODES.get(status, "error"), "message": message, "fields": fields or {}}}
+def error_response(status, message, code=None, fields=None, **extra):
+    body = {"error": {"code": code or CODES.get(status, "error"), "message": message,
+                      "fields": fields or {}, **extra}}
     return jsonify(body), status
 
 
@@ -41,12 +42,16 @@ def register_error_handlers(app):
     def _http_error(err):
         # JSON for the API; the normal HTML page for anything else (the React app handles its own 404s)
         if request.path.startswith("/api"):
+            if err.code == 429:   # from Flask-Limiter; its own text ("5 per 1 minute") is not a sentence
+                return error_response(429, f"Too many attempts ({err.description}). Please wait and try again.")
             return error_response(err.code, err.description)
         return err
 
     @app.errorhandler(Exception)
     def _unexpected(err):
         db.session.rollback()
-        app.logger.exception("unhandled error on %s %s", request.method, request.path)
-        # The details go to the server log only; the user never sees code or stack traces.
-        return error_response(500, "Something went wrong on the server. Please try again.")
+        request_id = g.get("request_id", "-")
+        app.logger.exception("[%s] unhandled error on %s %s", request_id, request.method, request.path)
+        # The details go to the server log only; the user sees a generic message and the request id.
+        return error_response(500, f"Something went wrong on the server (error {request_id}). Please try again.",
+                              request_id=request_id)

@@ -1,6 +1,8 @@
 """Security headers on every response, and one log line per request."""
 import logging
+import re
 import time
+import uuid
 
 from flask import g, request
 
@@ -32,12 +34,18 @@ def register_request_logging(app):
     log = logging.getLogger("disciplina.request")
 
     @app.before_request
-    def _start_timer():
+    def _start_request():
         g.request_started = time.perf_counter()
+        # A short id for this request: shown in error messages and every log line, so a user's
+        # "error abc123" can be found in the server log. Render's own id is reused when present.
+        incoming = request.headers.get("X-Request-ID", "")
+        g.request_id = incoming if re.fullmatch(r"[A-Za-z0-9-]{8,64}", incoming) else uuid.uuid4().hex[:12]
 
     @app.after_request
     def _log(response):
         ms = (time.perf_counter() - g.get("request_started", time.perf_counter())) * 1000
+        response.headers.setdefault("X-Request-ID", g.get("request_id", "-"))
         # Method, path and status only: never bodies, passwords or tokens.
-        log.info("%s %s %s %.0fms", request.method, request.path, response.status_code, ms)
+        log.info("[%s] %s %s %s %.0fms", g.get("request_id", "-"), request.method, request.path,
+                 response.status_code, ms)
         return response

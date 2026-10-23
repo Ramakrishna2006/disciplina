@@ -3,6 +3,9 @@ Flask extensions, created once here and connected to the app in create_app().
 Keeping them in their own module avoids circular imports: models import `db` from here,
 and the app factory imports both.
 """
+from flask_jwt_extended import JWTManager
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData, event
@@ -26,6 +29,8 @@ class Base(DeclarativeBase):
 
 db = SQLAlchemy(model_class=Base)
 migrate = Migrate()
+jwt = JWTManager()                                  # login tokens (stage 3)
+limiter = Limiter(key_func=get_remote_address)      # rate limits, counted per client IP address
 
 
 @event.listens_for(Engine, "connect")

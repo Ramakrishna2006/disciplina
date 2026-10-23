@@ -33,6 +33,9 @@ class User(db.Model):
     default_temperature: Mapped[float] = mapped_column(default=0.0, nullable=False)
     created_at: Mapped[datetime] = created_at()
     last_login_at: Mapped[datetime | None] = mapped_column(UTCDateTime())
+    # Login tokens issued before this moment are refused. Set when the password changes, so a
+    # stolen or forgotten session on another device stops working at once.
+    tokens_valid_after: Mapped[datetime | None] = mapped_column(UTCDateTime())
 
     # Deleting a user deletes everything they own (the database does it: ON DELETE CASCADE).
     experiments = relationship("Experiment", back_populates="owner", cascade="all, delete-orphan",
@@ -53,6 +56,14 @@ class User(db.Model):
 
     def check_password(self, password):
         return bool(password) and check_password_hash(self.password_hash, password)
+
+    def to_dict(self):
+        """What the API shows about a user. Never includes the password hash."""
+        return {"id": self.id, "email": self.email, "name": self.name, "role": self.role,
+                "theme": self.theme, "default_model": self.default_model,
+                "default_temperature": self.default_temperature,
+                "created_at": self.created_at.isoformat(),
+                "last_login_at": self.last_login_at.isoformat() if self.last_login_at else None}
 
     def __repr__(self):
         return f"<User {self.id} {self.email}>"

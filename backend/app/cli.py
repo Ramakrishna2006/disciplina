@@ -1,10 +1,11 @@
 """
 Command-line tools, run from the repository folder:
 
-    flask --app backend.app seed     add the 40 people and the published reference experiment
+    flask --app backend.app seed            add the 40 people and the published reference experiment
+    flask --app backend.app create-admin    create an admin account (asks for the password)
 
 `seed` only ADDS rows that are missing. Running it twice changes nothing, and it never deletes
-or overwrites your data. (Later stages add create-admin, export-data and import-data here.)
+or overwrites your data. (Stage 8 adds export-data and import-data here.)
 """
 import json
 import secrets
@@ -15,6 +16,7 @@ from flask import current_app
 from .extensions import db
 from .models import Experiment, Metric, Person, Result, User
 from .models.base import utcnow
+from .schemas.auth import RegisterIn
 
 REFERENCE_OWNER = "reference@disciplina.local"
 REFERENCE_NAME = "Published reference run"
@@ -79,6 +81,8 @@ def seed_reference_experiment():
 
 
 def register_cli(app):
+    register_admin_cli(app)
+
     @app.cli.command("seed")
     def seed():
         """Add the 40 people and the reference experiment (only what is missing)."""
@@ -87,3 +91,31 @@ def register_cli(app):
         db.session.commit()   # one transaction: everything is saved, or nothing is
         click.echo(f"people: {people} added ({db.session.query(Person).count()} in total)")
         click.echo(f"reference experiment: {'added' if experiment else 'already there'}")
+
+
+def register_admin_cli(app):
+    @app.cli.command("create-admin")
+    @click.option("--email", prompt=True, help="Email address of the admin account.")
+    @click.option("--name", prompt=True, default="Admin", show_default=True)
+    def create_admin(email, name):
+        """Create an admin, or make an existing account an admin. The password is typed in (hidden)
+        and never stored in code, files or the shell history."""
+        from pydantic import ValidationError
+
+        email = email.strip().lower()
+        user = db.session.query(User).filter_by(email=email).one_or_none()
+        if user is not None:
+            user.role, user.is_active = "admin", True
+            db.session.commit()
+            click.echo(f"{email} is now an admin (password unchanged).")
+            return
+        password = click.prompt("Password (at least 10 characters)", hide_input=True, confirmation_prompt=True)
+        try:
+            body = RegisterIn(name=name, email=email, password=password)   # same rules as the website
+        except ValidationError as e:
+            raise click.ClickException("; ".join(f"{err['loc'][0]}: {err['msg']}" for err in e.errors()))
+        user = User(email=body.email, name=body.name, role="admin")
+        user.set_password(body.password)
+        db.session.add(user)
+        db.session.commit()
+        click.echo(f"Admin account created: {body.email}")
