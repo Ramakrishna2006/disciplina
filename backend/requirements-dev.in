@@ -1,0 +1,3 @@
+# Everything in requirements.in, plus tools for development.
+-r requirements.in
+pytest>=8.4,<10                # runs backend/tests

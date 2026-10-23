@@ -18,3 +18,13 @@ no_replay/
 # Operating system files
 .DS_Store
 Thumbs.db
+
+# Disciplina Studio (web app): local database, secret key, trained runs and settings
+backend/instance/
+backend/.env
+.env
+.pytest_cache/
+
+# Frontend build output and libraries (from stage 4)
+node_modules/
+frontend/dist/

@@ -25,3 +25,19 @@ jobs:
         run: python main.py data && git diff --exit-code data/ DATASET.md
       - name: End-to-end training smoke test
         run: python main.py train --quick --dir test_run
+
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - run: pip install -r backend/requirements-dev.in
+      - name: Backend tests (health, errors, security headers, models, migrations, seed)
+        run: pytest
+      - name: Migrations build the database from nothing, and seeding twice is safe
+        run: |
+          flask --app backend.app db upgrade
+          flask --app backend.app seed
+          flask --app backend.app seed | grep -q "already there"

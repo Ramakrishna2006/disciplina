@@ -159,10 +159,24 @@ llm/
   plots.py         dependency-free SVG line charts
 main.py            CLI: train / eval / chat / data
 tests/             gradient check (model + LoRA), tokenizer round-trip, trained-model accuracy, pipeline tests
+backend/           Disciplina Studio API: Flask, database models, migrations, tests
 data/              the full dataset as CSV and text
 artifacts/         tokenizer, 3 trained models, results.json, run_log.txt, charts
 docs/images/       diagrams
 .github/workflows/ CI: all tests, chat answer check, data reproducibility, training smoke test
+```
+
+## Disciplina Studio (web app, in progress)
+
+A full-stack web app on top of the engine is being built on the `studio` branch: a Flask API with a
+database ([`backend/`](backend/README.md)), then a React + TypeScript frontend. So far: the backend
+foundation, the database (9 tables, migrations) and `/api/health`.
+
+```bash
+pip install -r backend/requirements-dev.in
+flask --app backend.app db upgrade && flask --app backend.app seed
+flask --app backend.app run           # http://127.0.0.1:5000/api/health
+pytest                                # backend tests
 ```
 
 ## Where these techniques are used
