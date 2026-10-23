@@ -21,6 +21,19 @@ export default defineConfig({
   },
   build: {
     outDir: "dist", // Flask serves this folder in production (see backend/app/routes/frontend.py)
+    rolldownOptions: {
+      output: {
+        // Libraries in their own files: they rarely change, so browsers keep them cached between
+        // releases, and no single file grows past 500 kB.
+        codeSplitting: {
+          groups: [
+            { name: "react", test: /node_modules[\\/](react|react-dom|scheduler|react-router)[\\/]/, priority: 3 },
+            { name: "ui", test: /node_modules[\\/](radix-ui|@radix-ui|lucide-react|sonner|@floating-ui)[\\/]/, priority: 2 },
+            { name: "forms", test: /node_modules[\\/](zod|react-hook-form|@hookform)[\\/]/, priority: 1 },
+          ],
+        },
+      },
+    },
   },
   test: {
     environment: "jsdom",
