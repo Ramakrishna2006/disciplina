@@ -5,10 +5,15 @@ import { loginSchema, registerSchema } from "./schemas"
 
 const valid = { name: "Asha", email: "asha@example.com", password: "correct horse", confirmPassword: "correct horse" }
 
-/** {field: message} for every rule the value breaks ({} when it is valid). */
+/** {field: first message} for the rules the value breaks ({} when it is valid). Zod reports every
+ *  broken rule; like the form, we show only the first message for each field. */
 function errorsOf(schema: z.ZodType, value: unknown): Record<string, string> {
   const result = schema.safeParse(value)
-  return result.success ? {} : Object.fromEntries(result.error.issues.map((i) => [String(i.path[0]), i.message]))
+  const errors: Record<string, string> = {}
+  if (!result.success) {
+    for (const issue of result.error.issues) errors[String(issue.path[0])] ??= issue.message
+  }
+  return errors
 }
 
 describe("register rules (the same as the backend)", () => {
