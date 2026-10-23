@@ -160,6 +160,7 @@ llm/
 main.py            CLI: train / eval / chat / data
 tests/             gradient check (model + LoRA), tokenizer round-trip, trained-model accuracy, pipeline tests
 backend/           Disciplina Studio API: Flask, database models, migrations, tests
+frontend/          Disciplina Studio website: React, TypeScript, Tailwind, shadcn/ui
 data/              the full dataset as CSV and text
 artifacts/         tokenizer, 3 trained models, results.json, run_log.txt, charts
 docs/images/       diagrams
@@ -168,17 +169,18 @@ docs/images/       diagrams
 
 ## Disciplina Studio (web app, in progress)
 
-A full-stack web app on top of the engine is being built on the `studio` branch: a Flask API with a
-database ([`backend/`](backend/README.md)), then a React + TypeScript frontend. So far: the backend
-foundation, the database (9 tables, migrations), and accounts: register, sign in and out, profile,
-password change, account deletion, with httpOnly cookies, CSRF protection and rate limits
-([API reference](docs/API.md)).
+A full-stack web app on top of the engine, built on the `studio` branch: a Flask API with a database
+([`backend/`](backend/README.md)) and a React + TypeScript frontend ([`frontend/`](frontend/README.md)).
+So far: the database (9 tables, migrations), accounts with httpOnly-cookie login, CSRF protection and
+rate limits ([API reference](docs/API.md)), and the website shell: landing page, sign in, sign up,
+dashboard, light and dark themes.
 
 ```bash
 pip install -r backend/requirements-dev.in
 flask --app backend.app db upgrade && flask --app backend.app seed
-flask --app backend.app run           # http://127.0.0.1:5000/api/health
-pytest                                # backend tests
+flask --app backend.app run                 # API on http://127.0.0.1:5000
+cd frontend && npm install && npm run dev   # website on http://localhost:5173 (second terminal)
+pytest                                      # backend tests;  cd frontend && npm test  for the frontend
 ```
 
 ## Where these techniques are used

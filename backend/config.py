@@ -51,7 +51,7 @@ def local_secret(name):
 
 class BaseConfig:
     APP_NAME = "Disciplina Studio"
-    VERSION = "0.3.0"
+    VERSION = "0.4.0"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}   # reconnect if the database slept (Neon does)
     MAX_CONTENT_LENGTH = 64 * 1024                          # reject request bodies over 64 KB
@@ -78,6 +78,7 @@ class BaseConfig:
     PASSWORD_MIN_LENGTH = 10
     TRAINING_ENABLED = env_bool("TRAINING_ENABLED", True)   # false online: free hosting cannot train
     ARTIFACTS_DIR = ROOT_DIR / "artifacts"                  # the published, pre-trained models
+    FRONTEND_DIST = ROOT_DIR / "frontend" / "dist"          # the built React app (npm run build)
     RUNS_DIR = INSTANCE_DIR / "experiments"                 # models trained from the web app
     LOG_LEVEL = os.environ.get("LOG_LEVEL", "INFO")
 

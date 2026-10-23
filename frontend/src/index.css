@@ -1,0 +1,131 @@
+/*
+ * Disciplina Studio design tokens.
+ * Every colour, radius and font is a CSS variable ("token"). shadcn/ui components and our own
+ * components only use these names (bg-background, text-primary, border-border ...), so changing a
+ * value here restyles the whole app. Light values are in :root, dark values in .dark (the class is
+ * put on <html> by public/theme-init.js and useTheme()).
+ * Colours come from the logo: deep navy, with a sky -> indigo -> violet accent.
+ */
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
+  --radius-sm: calc(var(--radius) - 6px);
+  --radius-md: calc(var(--radius) - 4px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-sidebar: var(--sidebar);
+}
+
+:root {
+  --radius: 0.75rem; /* 12 px, like the logo's rounded square */
+  --background: #f7f8fc;
+  --foreground: #0b1530;
+  --card: #ffffff;
+  --card-foreground: #0b1530;
+  --popover: #ffffff;
+  --popover-foreground: #0b1530;
+  --primary: #4f46e5;
+  --primary-foreground: #ffffff;
+  --secondary: #eef0f8;
+  --secondary-foreground: #0b1530;
+  --muted: #eef0f8;
+  --muted-foreground: #56607a;
+  --accent: #eef2ff;
+  --accent-foreground: #312e81;
+  --destructive: #dc2626;
+  --success: #15803d;
+  --warning: #b45309;
+  --border: #dde1ee;
+  --input: #d5dae8;
+  --ring: #4f46e5;
+  --chart-1: #0ea5e9; /* sky */
+  --chart-2: #6366f1; /* indigo */
+  --chart-3: #8b5cf6; /* violet */
+  --sidebar: #ffffff;
+}
+
+.dark {
+  --background: #0b1530;
+  --foreground: #e7ebf7;
+  --card: #111d3f;
+  --card-foreground: #e7ebf7;
+  --popover: #111d3f;
+  --popover-foreground: #e7ebf7;
+  --primary: #818cf8;
+  --primary-foreground: #0b1530;
+  --secondary: #1a2750;
+  --secondary-foreground: #e7ebf7;
+  --muted: #16224a;
+  --muted-foreground: #a3acc6;
+  --accent: #1e2a55;
+  --accent-foreground: #e7ebf7;
+  --destructive: #f87171;
+  --success: #4ade80;
+  --warning: #fbbf24;
+  --border: #24315e;
+  --input: #2a386a;
+  --ring: #818cf8;
+  --chart-1: #38bdf8;
+  --chart-2: #818cf8;
+  --chart-3: #a78bfa;
+  --sidebar: #0e1936;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    color-scheme: light;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+  }
+  code,
+  kbd {
+    @apply font-mono;
+  }
+}
+
+/* Respect "reduce motion" in the operating system: no animations or smooth scrolling. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
