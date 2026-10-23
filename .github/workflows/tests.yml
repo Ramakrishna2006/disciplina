@@ -17,6 +17,8 @@ jobs:
         run: python tests/test_tokenizer.py
       - name: Trained models answer all 60 held-out questions, with no forgetting
         run: python tests/test_model.py
+      - name: Experiment pipeline (same weights as the original recipe, progress, cancel)
+        run: python tests/test_experiment.py
       - name: Chat command answers a held-out question
         run: printf "Where does Leela live?\n" | python main.py chat | grep -q "Surat"
       - name: Dataset export is reproducible (matches the committed data/)

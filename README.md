@@ -112,7 +112,7 @@ python -m venv venv
 venv\Scripts\activate                 # Mac/Linux: source venv/bin/activate
 pip install -r requirements.txt
 
-python main.py test                   # all tests: backprop maths, tokenizer, 60/60 held-out answers (~1 min)
+python main.py test                   # all tests: backprop maths, tokenizer, 60/60 held-out answers (~2 min)
 python main.py chat                   # ask about any of the 40 people (trained models included)
 python main.py eval                   # full report: tokenizer, embeddings, prompting, scores (~1 min)
 python main.py train                  # retrain everything from scratch (~30 min, CPU)
@@ -120,7 +120,7 @@ python main.py train                  # retrain everything from scratch (~30 min
 
 | Command | What it does |
 | --- | --- |
-| `python main.py train [--quick] [--no-replay] [--dir D]` | data + tokenizer → pre-train → fine-tune (full and LoRA) → charts → evaluation |
+| `python main.py train [--preset full\|short\|quick] [--no-replay] [--dir D]` | data + tokenizer → pre-train → fine-tune (full and LoRA) → charts → evaluation (~30 / ~10 / ~5 min) |
 | `python main.py eval` | report on the saved models |
 | `python main.py chat [--base] [--temperature T] [--top_k K]` | interactive chat; `--base` = raw pre-trained model |
 | `python main.py data` | regenerate `data/` and `DATASET.md` |
@@ -150,6 +150,7 @@ llm/
   tokenizer.py     byte-level BPE: train, encode, decode, save/load
   model.py         GPT forward + hand-written backward, LoRA, AdamW, cosine schedule
   training.py      pre-training loop; supervised fine-tuning with loss mask and replay
+  experiment.py    the whole pipeline as one function (settings, presets, progress, cancel)
   data.py          synthetic world, pre-training corpus, Q&A data
   prompts.py       zero-shot / few-shot / completion prompt styles
   evaluate.py      perplexity, exact-match accuracy, generation
@@ -157,7 +158,7 @@ llm/
   dataset.py       exports data/ and DATASET.md
   plots.py         dependency-free SVG line charts
 main.py            CLI: train / eval / chat / data
-tests/             gradient check (model + LoRA), tokenizer round-trip, trained-model accuracy tests
+tests/             gradient check (model + LoRA), tokenizer round-trip, trained-model accuracy, pipeline tests
 data/              the full dataset as CSV and text
 artifacts/         tokenizer, 3 trained models, results.json, run_log.txt, charts
 docs/images/       diagrams

@@ -54,17 +54,19 @@ pip install -r requirements.txt
 python -c "import numpy; print(numpy.__version__)"
 ```
 
-## 4. Check that everything works (about 1 minute)
+## 4. Check that everything works (about 2 minutes)
 
 ```
 python main.py test
 ```
 
-It runs the three test files and ends with `ALL TESTS PASSED`. You can also run them one at a time:
-`python tests/test_gradients.py`, `python tests/test_tokenizer.py`, `python tests/test_model.py`.
+It runs the four test files and ends with `ALL TESTS PASSED`. You can also run them one at a time:
+`python tests/test_gradients.py`, `python tests/test_tokenizer.py`, `python tests/test_model.py`,
+`python tests/test_experiment.py`.
 Each prints lines ending in `OK`. The first proves the hand-written backpropagation is mathematically correct, the
 second that the tokenizer is lossless, and the third that the trained models answer all 60 held-out questions
-correctly without forgetting (about 20 seconds).
+correctly without forgetting (about 20 seconds), and the fourth that the training pipeline gives exactly the same
+weights as the original recipe and can report progress and be cancelled (about 30 seconds).
 
 ## 5. Run the project
 
@@ -79,7 +81,8 @@ Everything is one command, `python main.py <command>`:
 | `python main.py data` | seconds | Re-creates the dataset files in `data/` and `DATASET.md` |
 | `python main.py train` | ~30 min | Re-trains everything from zero and overwrites `artifacts/` |
 | `python main.py train --no-replay --dir no_replay` | ~30 min | Ablation: fine-tunes without replay, to see catastrophic forgetting |
-| `python main.py train --quick --dir test_run` | ~3 min | Fast smoke test into a separate folder (results will be poor) |
+| `python main.py train --preset short --dir short_run` | ~10 min | Shorter training into a separate folder |
+| `python main.py train --quick --dir test_run` | ~5 min | Fast smoke test into a separate folder (results will be poor) |
 
 Training produces, in `artifacts/`: the tokenizer, three models, `results.json`, `run_log.txt`, and three
 charts (`pretraining_loss.svg`, `finetuning_loss.svg`, `embeddings_pca.svg`) that open in any browser.

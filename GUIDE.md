@@ -69,7 +69,7 @@ The NumPy features this project uses:
 | `os` | scripts | Builds file paths that work on Windows and Mac, finds the `artifacts` folder |
 | `sys` | `main.py` | Sets UTF-8 printing so symbols like ✓ work on Windows |
 | `time` | training | Measures how many seconds training has taken |
-| `copy` | `main.py` | `copy.deepcopy(base)` makes an independent copy of the model before fine-tuning it |
+| `copy` | `llm/experiment.py` | `copy.deepcopy(base)` makes an independent copy of the model before fine-tuning it |
 | `csv` | `llm/dataset.py` | Writes `data/people.csv`, the table of all facts |
 
 ### Why not PyTorch?
@@ -93,14 +93,16 @@ disciplina/
 │   ├── prompts.py            zero-shot / few-shot / completion prompts
 │   ├── evaluate.py           perplexity, accuracy, text generation helper
 │   ├── embeddings.py         nearest words, category similarity, PCA picture
+│   ├── experiment.py         the whole training pipeline as one function (used by main.py)
 │   ├── dataset.py            exports data/ and DATASET.md
 │   └── plots.py              draws the training-curve charts (SVG)
 ├── tests/
 │   ├── test_gradients.py     proves the hand-written maths is correct
 │   ├── test_tokenizer.py     proves encode/decode is lossless
-│   └── test_model.py         checks the trained models: 60/60 held-out answers, no forgetting
+│   ├── test_model.py         checks the trained models: 60/60 held-out answers, no forgetting
+│   └── test_experiment.py    checks the pipeline: same weights as the original recipe, progress, cancel
 ├── .github/workflows/        runs all tests automatically on every GitHub upload
-├── main.py                   the command-line tool: train / eval / chat / data
+├── main.py                   the command-line tool: train / eval / chat / data / test
 ├── requirements.txt          the one dependency: numpy
 ├── DATASET.md / GUIDE.md     the dataset page and this guide
 ├── LICENSE                   MIT licence: anyone may use the code
@@ -123,7 +125,7 @@ disciplina/
 2. `model.py` depends only on NumPy.
 3. `training.py` and `evaluate.py` use the model.
 4. `prompts.py` and `dataset.py` use `data.py`; `embeddings.py` uses the model and tokenizer; `plots.py` uses only NumPy.
-5. `main.py` uses everything.
+5. `experiment.py` uses everything above to run the whole pipeline; `main.py` calls it.
 
 This is also the order of the sections that follow, so you can rebuild the project from scratch by reading top to bottom.
 
@@ -310,7 +312,7 @@ class GPTConfig:
     block_size: int = 64    # context length: the most tokens the model can look at
     n_layer: int = 4        # how many transformer blocks are stacked
     n_head: int = 4         # attention heads per block
-    n_embd: int = 96        # numbers per token vector (main.py uses 96)
+    n_embd: int = 96        # numbers per token vector (experiment.py uses 96)
     dtype: str = "float32"  # number precision
 ```
 
@@ -559,7 +561,7 @@ def add_lora(self, rank=8, alpha=16, targets=("qkv", "fc")):
 
 - Every existing name is put in `self.frozen`, so the backward pass and optimiser skip it.
 - `B` starts at **zero**, so at the start `A @ B = 0` and the model behaves exactly like the base model. Training then grows the correction from nothing.
-- `main.py` puts adapters on all four matrices of every layer: 49,152 trainable numbers, 9.6% of the model.
+- `experiment.py` puts adapters on all four matrices of every layer: 49,152 trainable numbers, 9.6% of the model.
 
 `merge_lora()` then folds each correction into its weight once training is finished: `W = W + scale × (A @ B)`. The adapters disappear and the model runs at full speed. The gradient test checks that the outputs are identical before and after merging.
 
@@ -720,9 +722,9 @@ def completion_style(item):   # "Swati lives in"
 
 On the base model the scores were 0%, 0% and 100%. The lesson: **a prompt works best when it looks like the text the model was trained on**. Few-shot prompting fails here because learning from examples inside the prompt (**in-context learning**) only appears in much larger models trained on varied data.
 
-## 13. `main.py`, the helper modules and the tests
+## 13. `experiment.py`, `main.py`, the helper modules and the tests
 
-`main.py` contains no new machine-learning ideas. It calls the building blocks in the right order, behind five commands.
+`experiment.py` and `main.py` contain no new machine-learning ideas. `experiment.py` calls the building blocks in the right order; `main.py` puts that behind five commands.
 
 ### The command-line interface
 
@@ -733,25 +735,60 @@ for cmd in ["train", "eval", "chat", "data", "test"]:
     p.add_argument("--dir", default=os.path.join(ROOT, "artifacts"))
 ...
 {"train": train, "chat": chat, "test": test,
- "eval": lambda a: report(*load(a.dir)),
+ "eval": lambda a: evaluate(*load_run(a.dir)),
  "data": lambda a: print(f"dataset written to {os.path.relpath(export(ROOT))}/ and DATASET.md")}[a.cmd](a)
 ```
 
 `argparse` **sub-commands** turn `python main.py train` and `python main.py chat --base` into calls of the matching function. The last line is a dictionary from command name to function: it looks up the command you typed and calls it. `ROOT` comes from `__file__` (the script's own location), so the tool finds `artifacts/` from any folder.
 
-### `train`: the whole pipeline, about 30 minutes
+### `llm/experiment.py`: the whole pipeline in one function
 
-1. **Data and tokenizer:** builds the world, the 4,000-document corpus and the 300-document validation text; trains the tokenizer on the corpus plus the Q&A text (so question words like " Where" become tokens too); saves `tokenizer.json`; writes the dataset files with `export`.
-2. **Pre-training:** creates `GPTConfig(vocab_size=613, block_size=64, n_layer=4, n_head=4, n_embd=96)`, measures perplexity before training (638), trains 2,000 steps, saves `base_model.npz`.
-3. **Fine-tuning:** a loop over two settings. Each makes an independent `copy.deepcopy(base)`; the LoRA copy gets `add_lora(...)` first. Both train 400 steps **with replay** (Section 11), then `merge_lora()` (which does nothing for the full copy) and save.
+The training recipe lives in one function, `run_experiment(config, out_dir, on_progress=None, should_stop=None, log=print)`.
+Both `python main.py train` and the web app (Disciplina Studio) call it, so there is only one copy of the recipe.
+
+**The settings: `ExperimentConfig`.** A `@dataclass` holding everything a user may change: `pretrain_steps` (2000),
+`pretrain_warmup` (100), `eval_every` (100), `finetune_steps` (400), `lora_rank` (8), `lora_alpha` (16), `replay`
+(True), `seed` (0) and `evaluate` (True). The defaults are exactly the published run. `__post_init__` runs
+automatically after the object is created and rejects bad values (for example `lora_rank=0` or a step count that is
+not a whole number), so a mistake from a web form can never start a broken run. `from_dict` builds a config from JSON
+and ignores unknown keys.
+
+**Presets.** `PRESETS` names three ready-made configs: `full` (~30-40 min), `short` (600 + 150 steps, ~10 min) and
+`quick` (150 + 60 steps, ~5 min).
+
+**The steps:**
+
+1. **Data and tokenizer:** builds the world, the 4,000-document corpus and the 300-document validation text; trains the tokenizer on the corpus plus the Q&A text (so question words like " Where" become tokens too); saves `tokenizer.json`.
+2. **Pre-training:** creates `GPTConfig(vocab_size=613, block_size=64, n_layer=4, n_head=4, n_embd=96)`, measures perplexity before training (638), trains `pretrain_steps` steps, saves `base_model.npz`.
+3. **Fine-tuning:** a loop over two settings. Each makes an independent `copy.deepcopy(base)`; the LoRA copy gets `add_lora(...)` first. Both train `finetune_steps` steps **with replay** (Section 11) unless `replay=False`, then `merge_lora()` (which does nothing for the full copy) and save.
 4. **Charts:** `plots.line_chart_svg` draws the pre-training and fine-tuning loss curves; `pca_svg` draws the embedding map.
-5. **Report:** calls `report()` (below) and saves `results.json` and `run_log.txt`.
+5. **Report:** calls `evaluate()` (below) and saves `results.json`, which now also records the `config` used.
 
-`--quick` cuts training to 150 + 60 steps for a 3-minute test; `--no-replay` turns replay off to reproduce the forgetting experiment; `--dir` saves somewhere other than `artifacts/`. The `log()` helper prints each line and keeps it for `run_log.txt`. `sys.stdout.reconfigure(encoding="utf-8")` and `encoding="utf-8"` on every file keep it working on Windows.
+**Progress and cancelling.** `pretrain` and `finetune` accept an optional `on_step(step, steps, loss)` function that
+they call after every training step. `run_experiment` uses it to count finished steps out of
+`pretrain_steps + 2 x finetune_steps` and calls `on_progress(phase, fraction, info)`, where `phase` is one of
+`data`, `pretrain`, `finetune-full`, `finetune-lora`, `evaluate`, and `fraction` goes from 0 to 1. After every step it
+also asks `should_stop()`; if that returns True it raises `ExperimentCancelled`, which stops the run at once. The web
+app uses these two hooks to draw a progress bar and to offer a Cancel button. When the hooks are not given (the CLI),
+nothing changes: the random numbers are drawn in exactly the same order, so the weights are bit-for-bit identical to
+the original recipe. `tests/test_experiment.py` proves this.
+
+### `train` in `main.py`: choosing the settings
+
+```python
+config = replace(PRESETS["quick" if a.quick else a.preset], replay=not a.no_replay)
+results = run_experiment(config, a.dir, log=log)
+```
+
+`--preset full|short|quick` picks a preset (`--quick` is a shortcut for `--preset quick`); `--no-replay` turns replay
+off to reproduce the forgetting experiment; `--dir` saves somewhere other than `artifacts/`. `dataclasses.replace`
+copies a config with one field changed. `train` also writes the dataset files with `export`, and the `log()` helper
+prints each line and keeps it for `run_log.txt`. `sys.stdout.reconfigure(encoding="utf-8")` and `encoding="utf-8"` on
+every file keep it working on Windows.
 
 ### `eval`: the report
 
-`report(tok, models)` loads nothing itself; it receives the tokenizer and the three models and prints four sections: how sample sentences are tokenized; embedding similarity and nearest neighbours; the three prompt styles and three decoding settings on the base model; and the final table (accuracy on seen and held-out people, completion accuracy, perplexity) with sample answers. `train` calls the same function, so the numbers you see with `eval` are exactly the ones training reported.
+`evaluate(tok, models)` in `experiment.py` loads nothing itself; it receives the tokenizer and the three models (from `load_run(folder)`) and prints four sections: how sample sentences are tokenized; embedding similarity and nearest neighbours; the three prompt styles and three decoding settings on the base model; and the final table (accuracy on seen and held-out people, completion accuracy, perplexity) with sample answers. Training calls the same function, so the numbers you see with `eval` are exactly the ones training reported.
 
 ### `chat`: talking to the model
 
@@ -775,12 +812,13 @@ A loop that reads your text with `input()`, wraps it in the Q&A format (unless `
 
 ### The tests
 
-`python main.py test` runs all three test files one after another with `subprocess.call([sys.executable, ...])`, which starts each as a separate Python process using the same interpreter (your `venv`). A non-zero exit code means a test failed, and the command stops with `FAILED`.
+`python main.py test` runs all four test files one after another with `subprocess.call([sys.executable, ...])`, which starts each as a separate Python process using the same interpreter (your `venv`). A non-zero exit code means a test failed, and the command stops with `FAILED`.
 
 - **`tests/test_gradients.py`** builds a tiny model (2 layers, 16 numbers per token) in 64-bit precision, gives every weight random values, and compares the hand-written gradients with the nudge-and-measure estimate from Section 9. It repeats the check with LoRA adapters, then checks that `merge_lora()` does not change the outputs. **Run it after any change to `model.py`.**
 - **`tests/test_tokenizer.py`** checks that encoding then decoding gives back exactly the original text (including Hindi and Telugu, which the tokenizer never saw), that `<|endoftext|>` is always one token, and that saving and loading gives identical ids.
 - **`tests/test_model.py`** checks the trained models in `artifacts/`: both fine-tuned models must answer all 60 held-out questions correctly with one-word answers, keep completion accuracy at 100% and perplexity within 2% of the base model (no forgetting), and five hand-written questions (including lowercase input) must get exact answers.
-- **`.github/workflows/tests.yml`** runs all three tests, a chat answer check, the dataset reproducibility check and a quick training run on GitHub's servers after every upload. A green tick next to your commits shows visitors the project works.
+- **`tests/test_experiment.py`** runs a tiny experiment (4 + 3 steps) through `run_experiment` and, separately, through the original step-by-step recipe, and checks that all 52 weight tensors of all three models are exactly equal. It also checks that the tokenizer equals the published one, that progress arrives in phase order from 0% to 100%, that `should_stop()` cancels a run, and that bad settings raise `ValueError`.
+- **`.github/workflows/tests.yml`** runs all four tests, a chat answer check, the dataset reproducibility check and a quick training run on GitHub's servers after every upload. A green tick next to your commits shows visitors the project works.
 
 ## 14. How an output is produced: "Where does Asha live?" → "Indore"
 
@@ -841,13 +879,13 @@ The best way to learn this project is to type it again yourself, in a new folder
 - [ ] **7. `evaluate.py` and `generate`.** Check "Asha lives in" completes correctly after full pre-training.
 - [ ] **8. Fine-tuning.** Write `sft_batch` with the loss mask, fine-tune, then test held-out people.
 - [ ] **9. LoRA.** Add `add_lora` and `merge_lora`; rerun the gradient test with adapters.
-- [ ] **10. `main.py`.** Finally tie it all together in one command-line tool.
+- [ ] **10. `experiment.py` and `main.py`.** Put the whole pipeline in one function, then put it behind one command-line tool.
 
 ### Exercises to deepen understanding
 
 1. **Remove the loss mask** in `sft_batch` (set the whole mask to 1). Does fine-tuning still reach 100% on held-out people?
 2. **Use one template per fact** (keep only the first item in each `FACT_TEMPLATES` list) and retrain. Can the fine-tuned model still answer held-out questions? This tests the claim in Section 5.
-3. **Shrink the model:** `n_embd=48` or `n_layer=2` in `main.py`. How do perplexity and accuracy change?
+3. **Shrink the model:** `n_embd=48` or `n_layer=2` in `llm/experiment.py`. How do perplexity and accuracy change?
 4. **Remove the position embeddings** (`x = P["wte"][idx]` only). What happens to the generated text?
 5. **Change the LoRA rank** from 8 to 1 or 32. How many trainable parameters, and does accuracy change?
 6. **Add a new person** to `NAMES` and retrain. Ask the chat about them.

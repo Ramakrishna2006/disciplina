@@ -16,7 +16,9 @@ def lm_batch(tokens, batch_size, block_size, rng):
 
 
 def pretrain(model, train_tokens, val_tokens, steps=2000, batch_size=32, lr=3e-3,
-             warmup=100, eval_every=250, seed=0, log=print):
+             warmup=100, eval_every=250, seed=0, log=print, on_step=None):
+    """Next-token pre-training. `on_step(step, steps, loss)` (optional) is called after every step;
+    the web app uses it for progress bars and to cancel a run (by raising an exception)."""
     rng = np.random.default_rng(seed)
     opt = AdamW(model, lr=lr, weight_decay=0.1)
     T = model.cfg.block_size
@@ -32,6 +34,8 @@ def pretrain(model, train_tokens, val_tokens, steps=2000, batch_size=32, lr=3e-3
             history.append({"step": step, "train_loss": loss, "val_loss": vl})
             log(f"  step {step:5d} | train loss {loss:.3f} | val loss {vl:.3f} "
                 f"| ppl {np.exp(vl):6.2f} | grad-norm {gnorm:.2f} | {time.time() - t0:5.0f}s")
+        if on_step:
+            on_step(step, steps, loss)
     return history
 
 
@@ -58,12 +62,14 @@ def sft_batch(examples, tok, block_size):
 
 
 def finetune(model, examples, tok, steps=300, batch_size=32, lr=1e-3, warmup=20,
-             seed=0, log=print, log_every=50, replay_tokens=None, replay_rows=8, replay_weight=0.5):
+             seed=0, log=print, log_every=50, replay_tokens=None, replay_rows=8, replay_weight=0.5,
+             on_step=None):
     """
     Supervised fine-tuning. With `replay_tokens` (the pre-training token stream), each batch also gets
     `replay_rows` windows of plain text, together weighted `replay_weight` x the answer tokens.
     This "replay" stops catastrophic forgetting: the model keeps its plain-text ability (same
     perplexity as the base model) while learning to answer questions.
+    `on_step(step, steps, loss)` works as in `pretrain`.
     """
     rng = np.random.default_rng(seed)
     opt = AdamW(model, lr=lr, weight_decay=0.0)
@@ -82,4 +88,6 @@ def finetune(model, examples, tok, steps=300, batch_size=32, lr=1e-3, warmup=20,
         if step % log_every == 0 or step == steps - 1:
             history.append({"step": step, "loss": loss})
             log(f"  step {step:4d} | loss {loss:.3f} | {time.time() - t0:4.0f}s")
+        if on_step:
+            on_step(step, steps, loss)
     return history
