@@ -1,6 +1,20 @@
 name: tests
 
-on: [push, pull_request]
+# Each change is tested once: pushes to main, and every pull request (which covers pushes to
+# the studio branch while its pull request is open). "Run workflow" on GitHub starts it by hand.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# A newer push to the same branch or pull request cancels the older, still-running test run.
+concurrency:
+  group: tests-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
   test:
@@ -34,8 +48,12 @@ jobs:
         with:
           python-version: "3.14"
       - run: pip install -r backend/requirements-dev.in
-      - name: Backend tests (health, errors, security headers, models, migrations, seed)
+      - name: Lint (ruff)
+        run: ruff check backend
+      - name: Backend tests (accounts, chat, dataset, experiments, dashboard, security, migrations)
         run: pytest
+      - name: Real training through the web runner (about a minute)
+        run: RUN_SLOW=1 pytest backend/tests/test_experiments.py -k real_training
       - name: Migrations build the database from nothing, and seeding twice is safe
         run: |
           flask --app backend.app db upgrade
@@ -55,7 +73,7 @@ jobs:
           cache: npm
           cache-dependency-path: frontend/package-lock.json
       - run: npm ci
-      - name: Frontend tests (forms, route guards, API client)
+      - name: Frontend tests (forms, route guards, API client, pages)
         run: npm test
       - name: Type-check and production build
         run: npm run build

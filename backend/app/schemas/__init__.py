@@ -24,9 +24,20 @@ def _field_message(err):
 
 
 def parse(schema):
+    """Validate the JSON body of a POST or PATCH."""
     data = request.get_json(silent=True)
     if not isinstance(data, dict):
         raise ApiError(400, "Send the request body as a JSON object.", code="bad_request")
+    return _validate(schema, data)
+
+
+def parse_query(schema):
+    """Validate the query string of a GET (?page=2&sort=name). Values arrive as text; Pydantic
+    turns "2" into 2 and "true" into True. Empty values (?search=) count as not sent."""
+    return _validate(schema, {k: v for k, v in request.args.items() if v != ""})
+
+
+def _validate(schema, data):
     try:
         return schema.model_validate(data)
     except ValidationError as e:

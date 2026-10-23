@@ -22,3 +22,8 @@ class ActivityEvent(db.Model):
     read_at: Mapped[datetime | None] = mapped_column(UTCDateTime())
 
     user = relationship("User", back_populates="activity")
+
+    def to_dict(self):
+        return {"id": self.id, "type": self.type, "message": self.message, "experiment_id": self.experiment_id,
+                "created_at": self.created_at.isoformat(),
+                "read_at": self.read_at.isoformat() if self.read_at else None}

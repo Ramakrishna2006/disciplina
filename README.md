@@ -167,13 +167,26 @@ docs/images/       diagrams
 .github/workflows/ CI: all tests, chat answer check, data reproducibility, training smoke test
 ```
 
-## Disciplina Studio (web app, in progress)
+## Disciplina Studio (web app)
 
-A full-stack web app on top of the engine, built on the `studio` branch: a Flask API with a database
-([`backend/`](backend/README.md)) and a React + TypeScript frontend ([`frontend/`](frontend/README.md)).
-So far: the database (9 tables, migrations), accounts with httpOnly-cookie login, CSRF protection and
-rate limits ([API reference](docs/API.md)), and the website shell: landing page, sign in, sign up,
-dashboard, light and dark themes.
+A full-stack web app on top of the engine: a Flask API with a database ([`backend/`](backend/README.md))
+and a React + TypeScript frontend ([`frontend/`](frontend/README.md)). Sign up, then:
+
+| Page | What you can do |
+| --- | --- |
+| Dashboard | Your numbers, the latest loss curve, what is training, recent activity |
+| Playground | Chat with the base, full fine-tuned and LoRA models; temperature and top-k; saved conversations |
+| Tokenizer | See how any text is cut into tokens, with their ids |
+| Embeddings | A 2-D map of the learned word vectors, and the nearest neighbours of any word |
+| Dataset | Search, filter and sort the 40 people; ask about anyone in one click |
+| Experiments | Train the whole recipe with your own settings in the background, watch the loss live, cancel, run again, export CSV |
+| Compare | 2 to 4 experiments side by side: scores and loss curves |
+| Activity | Notifications when experiments finish (and the bell in the top bar) |
+| Settings, Help | Profile, theme, default model, password, delete account; glossary and FAQ |
+
+Security: httpOnly-cookie login with CSRF protection, rate limits, every request body checked, your
+data visible only to you ([API reference](docs/API.md)). Light and dark themes, keyboard and screen
+reader friendly, works on phones.
 
 ```bash
 pip install -r backend/requirements-dev.in
@@ -182,6 +195,8 @@ flask --app backend.app run                 # API on http://127.0.0.1:5000
 cd frontend && npm install && npm run dev   # website on http://localhost:5173 (second terminal)
 pytest                                      # backend tests;  cd frontend && npm test  for the frontend
 ```
+
+Step-by-step for Windows: [INSTALL.md, section 10](INSTALL.md#10-run-the-web-app-disciplina-studio).
 
 ## Where these techniques are used
 

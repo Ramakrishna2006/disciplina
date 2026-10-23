@@ -19,3 +19,7 @@ class Person(db.Model):
     food: Mapped[str] = mapped_column(String(40), nullable=False, index=True)
     # fine-tuning: the model saw Q&A about this person; held-out: only plain text (the real test)
     split: Mapped[str] = mapped_column(String(12), nullable=False)
+
+    def to_dict(self):
+        return {"id": self.id, "name": self.name, "city": self.city, "job": self.job, "food": self.food,
+                "split": self.split}

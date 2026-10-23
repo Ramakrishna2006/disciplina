@@ -3,6 +3,7 @@ import { MenuIcon } from "lucide-react"
 import { NavLink, Outlet, useLocation } from "react-router"
 
 import { Logo } from "@/components/Logo"
+import { NotificationBell } from "@/components/NotificationBell"
 import { ThemeToggle } from "@/components/ThemeToggle"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetDescription, SheetTitle } from "@/components/ui/sheet"
@@ -19,7 +20,7 @@ function SideNav({ onNavigate }: { onNavigate?: () => void }) {
           <NavLink
             key={to}
             to={to}
-            end
+            end={to === "/app"}
             onClick={onNavigate}
             className={({ isActive }) =>
               cn(
@@ -36,7 +37,7 @@ function SideNav({ onNavigate }: { onNavigate?: () => void }) {
           <span
             key={to}
             aria-disabled="true"
-            title="Coming in stage 5"
+            title="Coming soon"
             className="flex cursor-not-allowed items-center gap-3 rounded-md px-3 py-2 text-sm text-muted-foreground/70"
           >
             <Icon className="size-4" aria-hidden />
@@ -52,7 +53,11 @@ function SideNav({ onNavigate }: { onNavigate?: () => void }) {
 export function AppLayout() {
   const [menuOpen, setMenuOpen] = useState(false)
   const { pathname } = useLocation()
-  const title = NAV_ITEMS.find((item) => item.to === pathname)?.label ?? "Disciplina Studio"
+  // The longest matching address wins, so /app/experiments/7 is titled "Experiments".
+  const title =
+    [...NAV_ITEMS, { label: "Settings", to: "/app/settings" }]
+      .filter((item) => pathname === item.to || pathname.startsWith(`${item.to}/`))
+      .sort((a, b) => b.to.length - a.to.length)[0]?.label ?? "Disciplina Studio"
 
   return (
     <div className="flex min-h-svh">
@@ -92,6 +97,7 @@ export function AppLayout() {
           </Button>
           <h1 className="truncate text-base font-semibold">{title}</h1>
           <div className="ml-auto flex items-center gap-1">
+            <NotificationBell />
             <ThemeToggle />
             <UserMenu />
           </div>

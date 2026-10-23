@@ -113,7 +113,7 @@ def register_admin_cli(app):
         try:
             body = RegisterIn(name=name, email=email, password=password)   # same rules as the website
         except ValidationError as e:
-            raise click.ClickException("; ".join(f"{err['loc'][0]}: {err['msg']}" for err in e.errors()))
+            raise click.ClickException("; ".join(f"{err['loc'][0]}: {err['msg']}" for err in e.errors())) from None
         user = User(email=body.email, name=body.name, role="admin")
         user.set_password(body.password)
         db.session.add(user)

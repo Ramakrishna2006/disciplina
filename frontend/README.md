@@ -20,13 +20,22 @@ npm run build        # type-check, then build into frontend/dist (served by Flas
 | `src/services/api.ts` | The only code that calls the backend: CSRF header, refresh-and-retry, errors |
 | `src/hooks/useAuth.tsx` | Who is signed in (asks the server; no token is ever stored in JavaScript) |
 | `src/hooks/useTheme.tsx` | Light, dark or system theme |
+| `src/hooks/useApi.ts` | `useApi` (loading / error / data for a page), `useInterval` (polling), `useDebounced` |
 | `src/lib/schemas.ts` | Form rules (Zod), the same as the backend's |
+| `src/lib/format.ts` | Percentages, dates, durations, written the same way everywhere |
 | `src/components/ui/` | shadcn/ui components, copied in so we can read and change them |
-| `src/components/` | Our components: form field, theme switch, user menu, route guards |
+| `src/components/` | Our components: form field, page states (loading, empty, error), the SVG loss chart, status badge, pagination, dialogs, notification bell, route guards |
 | `src/layouts/` | The public layout and the app layout (sidebar + top bar) |
 | `src/pages/` | One file per page |
 | `public/theme-init.js` | Applies dark mode before the page is drawn (no white flash) |
 | `components.json` | shadcn settings: `npx shadcn@latest add <component>` puts new components in `src/components/ui/` |
+
+**Code-splitting:** the pages inside the app are loaded with `React.lazy` only when you open them,
+so the first visit downloads less (see `src/App.tsx`).
+
+**Charts** are plain SVG (`src/components/LossChart.tsx`), with colours from the `--series-1..4`
+tokens. That palette was checked with a colour-blindness simulator; every chart also has a legend
+and a "Show as table" button, so colour is never the only clue.
 
 **Two servers in development, one in production.** `npm run dev` serves the React app on :5173
 and forwards every `/api` request to Flask on :5000, so the browser sees a single address and the

@@ -132,3 +132,44 @@ Open https://colab.research.google.com → *New notebook* → upload the project
 ```
 
 Colab already has NumPy. `!python main.py chat` also works: type your question in the input box under the cell.
+
+## 10. Run the web app (Disciplina Studio)
+
+You need Python (above) and **Node.js 22 or newer** (`winget install OpenJS.NodeJS.LTS`, then open a new
+terminal; `node --version` checks it). The web app uses **two terminals**, both opened in the project folder.
+
+**Terminal 1: the API (Flask)**
+
+```powershell
+venv\Scripts\activate
+pip install -r backend/requirements-dev.in      # once, and after it changes
+flask --app backend.app db upgrade              # creates or updates backend/instance/disciplina.db
+flask --app backend.app seed                    # adds the 40 people and the reference run (safe to repeat)
+flask --app backend.app run                     # leave it running: http://127.0.0.1:5000/api/health
+```
+
+**Terminal 2: the website (React)**
+
+```powershell
+cd frontend
+npm install                                     # once, and after package.json changes
+npm run dev                                     # open http://localhost:5173
+```
+
+Create an account on the website. To make it an admin (can publish experiments), stop Flask with
+Ctrl + C and run `flask --app backend.app create-admin`.
+
+**Checks:** `pytest` and `ruff check backend` in terminal 1; `npm test` and `npm run build` in
+`frontend/`.
+
+| Problem | Fix |
+|---|---|
+| `ECONNREFUSED` / "Can't reach the server" on the website | Flask is not running. Start it in terminal 1 |
+| `npm` error `ENOENT ... package.json` | You are not in `frontend/`. Run `cd frontend` first |
+| `no such table` | Run `flask --app backend.app db upgrade` |
+| An experiment stays "Queued" | The runner starts with the first request after Flask starts; reload the page. Only one trains at a time |
+| An experiment says "Interrupted" | Flask was stopped while it trained. Press "Run again" |
+| Too many attempts (429) | Rate limit: wait a minute (sign in: 5 tries per minute) |
+
+Your database is `backend/instance/disciplina.db`. Nothing in these steps deletes it; to back it up, stop
+Flask and copy the file.

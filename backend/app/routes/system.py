@@ -3,9 +3,16 @@ from flask import Blueprint, current_app
 from sqlalchemy import text
 
 from ..extensions import db
+from ..services.engine import get_engine
 from ..utils.responses import ok
 
 bp = Blueprint("system", __name__, url_prefix="/api")
+
+
+def models_status():
+    """"loaded" (in memory), "available" (files present, loaded on first use) or "missing"."""
+    engine = get_engine()
+    return "loaded" if engine.loaded else "available" if engine.available() else "missing"
 
 
 @bp.get("/health")
@@ -20,5 +27,5 @@ def health():
     cfg = current_app.config
     data = {"status": "ok" if database == "ok" else "degraded", "database": database,
             "app": cfg["APP_NAME"], "version": cfg["VERSION"], "environment": cfg["ENV_NAME"],
-            "training_enabled": cfg["TRAINING_ENABLED"]}
+            "training_enabled": cfg["TRAINING_ENABLED"], "models": models_status()}
     return ok(data, 200 if database == "ok" else 503)

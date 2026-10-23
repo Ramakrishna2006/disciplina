@@ -42,6 +42,10 @@
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
   --color-sidebar: var(--sidebar);
+  --color-series-1: var(--series-1);
+  --color-series-2: var(--series-2);
+  --color-series-3: var(--series-3);
+  --color-series-4: var(--series-4);
 }
 
 :root {
@@ -70,6 +74,12 @@
   --chart-2: #6366f1; /* indigo */
   --chart-3: #8b5cf6; /* violet */
   --sidebar: #ffffff;
+  /* Chart series (blue, orange, aqua, yellow), always in this order. Checked with a colour-blindness
+     simulator: every neighbouring pair stays distinguishable. Charts also have a legend and a table. */
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --series-4: #eda100;
 }
 
 .dark {
@@ -97,6 +107,10 @@
   --chart-2: #818cf8;
   --chart-3: #a78bfa;
   --sidebar: #0e1936;
+  --series-1: #3987e5;
+  --series-2: #d95926;
+  --series-3: #199e70;
+  --series-4: #c98500;
 }
 
 @layer base {

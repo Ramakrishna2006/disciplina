@@ -51,7 +51,7 @@ def local_secret(name):
 
 class BaseConfig:
     APP_NAME = "Disciplina Studio"
-    VERSION = "0.4.0"
+    VERSION = "0.5.0"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}   # reconnect if the database slept (Neon does)
     MAX_CONTENT_LENGTH = 64 * 1024                          # reject request bodies over 64 KB
@@ -75,11 +75,15 @@ class BaseConfig:
     RATELIMIT_HEADERS_ENABLED = True
     RATELIMIT_LOGIN = "5 per minute;20 per hour"
     RATELIMIT_REGISTER = "3 per hour"
+    RATELIMIT_CHAT = "30 per minute"                        # per user: each answer costs CPU time
+    RATELIMIT_EXPERIMENTS = "10 per hour"                   # per user: starting training runs
     PASSWORD_MIN_LENGTH = 10
     TRAINING_ENABLED = env_bool("TRAINING_ENABLED", True)   # false online: free hosting cannot train
     ARTIFACTS_DIR = ROOT_DIR / "artifacts"                  # the published, pre-trained models
     FRONTEND_DIST = ROOT_DIR / "frontend" / "dist"          # the built React app (npm run build)
     RUNS_DIR = INSTANCE_DIR / "experiments"                 # models trained from the web app
+    JOBS_AUTOSTART = True                                   # start the training runner on the first request
+    EXPERIMENT_EVALUATE = True                              # score the three models at the end of a run
     LOG_LEVEL = os.environ.get("LOG_LEVEL", "INFO")
 
 
@@ -104,6 +108,7 @@ class TestingConfig(BaseConfig):
     JWT_SECRET_KEY = "test-only-jwt-key-not-for-real-use-0123456789"
     SQLALCHEMY_DATABASE_URI = "sqlite://"                   # replaced by a temporary file in conftest.py
     TRAINING_ENABLED = True
+    JOBS_AUTOSTART = False                                  # tests run experiments themselves (run_one)
     LOG_LEVEL = "WARNING"
 
 

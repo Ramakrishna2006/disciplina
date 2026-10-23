@@ -20,10 +20,10 @@ pytest                                          # backend tests
 | `app/__init__.py` | `create_app()`, the application factory: builds and wires the app |
 | `app/extensions.py` | The shared `db`, `migrate`, `jwt` (login tokens) and `limiter` (rate limits) objects |
 | `app/models/` | The nine database tables |
-| `app/routes/` | API endpoints, one blueprint per area: `system.py`, `auth.py`, `users.py` |
-| `app/schemas/` | Pydantic rules for every request body (types, lengths, allowed values) |
-| `app/services/` | Logic shared by routes: `auth.py` creates, checks and revokes login tokens |
-| `app/utils/` | JSON responses and errors, security headers, request ids and logging |
+| `app/routes/` | API endpoints, one blueprint per area: `system`, `auth`, `users`, `playground` (chat, tokenizer, embeddings), `people`, `experiments`, `dashboard` (dashboard, activity, config), `frontend` (serves the built React app) |
+| `app/schemas/` | Pydantic rules for every request body and query string (types, lengths, allowed values) |
+| `app/services/` | Logic shared by routes: `auth.py` (login tokens), `engine.py` (the trained models, loaded once), `jobs.py` (the background training runner) |
+| `app/utils/` | JSON responses and errors, paging, security headers, request ids and logging |
 | `app/cli.py` | `flask seed`, `flask create-admin` |
 | `migrations/` | One file per database change, created by `flask db migrate` |
 | `tests/` | pytest tests; each test gets its own temporary database |
@@ -41,6 +41,17 @@ refresh token for 7 days) plus a readable `csrf_access_token` cookie. Every `POS
 `DELETE` must send that value back in an `X-CSRF-TOKEN` header; other websites cannot read it, so
 they cannot forge requests. Logging out puts both tokens on a blocklist; changing your password
 signs out every other device.
+
+**Training experiments:** `POST /api/experiments` only queues the experiment. One background thread
+(started on the first request) trains one experiment at a time with `llm/experiment.py`, saving
+progress and loss points every second; the model files go to `backend/instance/experiments/<id>/`.
+Run the server as **one process** (`flask run`, or `gunicorn -w 1 --threads 4`): several processes
+would each start a runner. If the server stops mid-run, that experiment is marked `interrupted` at
+the next start. `TRAINING_ENABLED=false` turns training off (the default in production).
+
+**Tests and lint:** `pytest` runs about 160 backend tests in a minute or two, with fake training so they
+stay fast; `RUN_SLOW=1 pytest -k real_training` also trains for real through the runner (about a
+minute). `ruff check backend` finds mistakes such as unused imports.
 
 **Your data is safe:** `db upgrade` only applies new migrations and `seed` only adds missing rows.
 Nothing in the setup deletes data. Backup: stop the server and copy `backend/instance/disciplina.db`.

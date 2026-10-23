@@ -45,8 +45,8 @@ export function UserMenu() {
           <div className="truncate text-xs text-muted-foreground">{user.email}</div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem disabled title="The settings page arrives in stage 5">
-          <SettingsIcon /> Settings (soon)
+        <DropdownMenuItem onSelect={() => navigate("/app/settings")}>
+          <SettingsIcon /> Settings
         </DropdownMenuItem>
         <DropdownMenuItem onSelect={signOut}>
           <LogOutIcon /> Sign out

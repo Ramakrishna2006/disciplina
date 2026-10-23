@@ -1,3 +1,4 @@
 # Everything in requirements.in, plus tools for development.
 -r requirements.in
 pytest>=8.4,<10                # runs backend/tests
+ruff>=0.15,<1                  # linter: `ruff check backend` finds mistakes before the tests run

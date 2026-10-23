@@ -106,3 +106,26 @@ describe("errors", () => {
     await expect(request("DELETE", "/api/users/me", { password: "x" })).resolves.toBeUndefined()
   })
 })
+
+describe("lists and query strings", () => {
+  it("leaves empty values out of the query string", async () => {
+    const { query } = await import("./api")
+    expect(query({ page: 2, search: "", city: null, split: undefined, replay: false })).toBe("?page=2&replay=false")
+    expect(query({})).toBe("")
+  })
+
+  it("returns the items and the page numbers of a paged list", async () => {
+    const meta = { page: 1, per_page: 20, total: 1, pages: 1 }
+    fetchMock.mockResolvedValueOnce(json(200, { data: [{ id: 3, name: "Leela" }], meta }))
+    const result = await api.people({ search: "lee" })
+    expect(fetchMock.mock.calls[0][0]).toBe("/api/people?search=lee")
+    expect(result).toEqual({ items: [{ id: 3, name: "Leela" }], meta })
+  })
+
+  it("treats 204 No Content as success", async () => {
+    document.cookie = "csrf_access_token=abc123; path=/"
+    fetchMock.mockResolvedValueOnce(json(204, null))
+    await expect(api.deleteExperiment(7)).resolves.toBeUndefined()
+    expect(fetchMock.mock.calls[0][1].method).toBe("DELETE")
+  })
+})

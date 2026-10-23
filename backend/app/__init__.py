@@ -42,6 +42,7 @@ def create_app(config_name=None, **overrides):
     from .cli import register_cli
     from .routes import BLUEPRINTS
     from .services.auth import register_jwt_callbacks
+    from .services.jobs import init_jobs
     from .utils.errors import register_error_handlers
     from .utils.security import register_request_logging, register_security
 
@@ -52,4 +53,5 @@ def create_app(config_name=None, **overrides):
     register_security(app)
     register_request_logging(app)
     register_cli(app)
+    init_jobs(app)
     return app

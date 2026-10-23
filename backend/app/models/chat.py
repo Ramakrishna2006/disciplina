@@ -29,6 +29,14 @@ class ChatSession(db.Model):
     messages = relationship("ChatMessage", back_populates="session", cascade="all, delete-orphan",
                             passive_deletes=True, order_by="ChatMessage.id")
 
+    def to_dict(self, message_count=None, last_message=None):
+        d = {"id": self.id, "title": self.title, "model": self.model,
+             "created_at": self.created_at.isoformat(), "updated_at": self.updated_at.isoformat()}
+        if message_count is not None:
+            d["message_count"] = message_count
+            d["last_message"] = last_message
+        return d
+
 
 class ChatMessage(db.Model):
     __tablename__ = "chat_messages"
@@ -49,3 +57,8 @@ class ChatMessage(db.Model):
     created_at: Mapped[datetime] = created_at()
 
     session = relationship("ChatSession", back_populates="messages")
+
+    def to_dict(self):
+        return {"id": self.id, "role": self.role, "content": self.content, "model": self.model,
+                "temperature": self.temperature, "top_k": self.top_k, "latency_ms": self.latency_ms,
+                "created_at": self.created_at.isoformat()}

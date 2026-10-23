@@ -1,0 +1,8 @@
+# Ruff: a fast Python linter for the web app. Run `ruff check backend` from the repository folder.
+# (The engine in llm/ keeps its compact research-code style and is checked by its own tests.)
+# It finds real mistakes (unused imports, undefined names, risky patterns); it does not reformat code.
+line-length = 130
+extend-exclude = ["backend/migrations/versions", "frontend"]
+
+[lint]
+select = ["F", "E", "W", "B"]   # pyflakes, pycodestyle, bugbear

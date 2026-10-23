@@ -8,6 +8,7 @@ from ..extensions import db
 from .base import UTCDateTime, created_at, in_list
 
 STATUSES = ("queued", "running", "completed", "failed", "cancelled", "interrupted")
+ACTIVE = ("queued", "running")
 METRIC_PHASES = ("pretrain", "full", "lora")
 RESULT_MODELS = ("base", "full", "lora")
 
@@ -50,6 +51,28 @@ class Experiment(db.Model):
     results = relationship("Result", back_populates="experiment", cascade="all, delete-orphan",
                            passive_deletes=True)
 
+    @property
+    def active(self):
+        """Queued or running: not finished yet."""
+        return self.status in ACTIVE
+
+    def to_dict(self, owner=False, results=True):
+        d = {"id": self.id, "name": self.name, "description": self.description, "status": self.status,
+             "is_public": self.is_public, "owner_id": self.owner_id,
+             "owner_name": self.owner.name if self.owner else None,
+             "pretrain_steps": self.pretrain_steps, "finetune_steps": self.finetune_steps,
+             "lora_rank": self.lora_rank, "replay": self.replay, "seed": self.seed,
+             "phase": self.phase, "progress": round(self.progress, 4), "error": self.error,
+             "cancel_requested": self.cancel_requested,
+             "created_at": self.created_at.isoformat(),
+             "started_at": self.started_at.isoformat() if self.started_at else None,
+             "finished_at": self.finished_at.isoformat() if self.finished_at else None,
+             "is_owner": owner}
+        if results:
+            order = {m: i for i, m in enumerate(RESULT_MODELS)}
+            d["results"] = [r.to_dict() for r in sorted(self.results, key=lambda r: order[r.model])]
+        return d
+
     def __repr__(self):
         return f"<Experiment {self.id} {self.name!r} {self.status}>"
 
@@ -71,6 +94,11 @@ class Metric(db.Model):
 
     experiment = relationship("Experiment", back_populates="metrics")
 
+    def to_dict(self):
+        return {"id": self.id, "phase": self.phase, "step": self.step,
+                "train_loss": round(self.train_loss, 5),
+                "val_loss": None if self.val_loss is None else round(self.val_loss, 5)}
+
 
 class Result(db.Model):
     """Final evaluation of one of the three models a run produces."""
@@ -90,3 +118,8 @@ class Result(db.Model):
     trainable_params: Mapped[int] = mapped_column(nullable=False)
 
     experiment = relationship("Experiment", back_populates="results")
+
+    def to_dict(self):
+        return {"model": self.model, "qa_seen": self.qa_seen, "qa_heldout": self.qa_heldout,
+                "completion": self.completion, "perplexity": round(self.perplexity, 4),
+                "trainable_params": self.trainable_params}

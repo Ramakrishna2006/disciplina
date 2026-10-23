@@ -28,3 +28,4 @@ backend/.env
 # Frontend build output and libraries (from stage 4)
 node_modules/
 frontend/dist/
+.ruff_cache/
